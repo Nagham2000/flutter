@@ -1,197 +1,261 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'student.dart';
-import 'attendance.dart';
 
 void main() {
-  runApp(Main());
+  runApp(const MyApp());
 }
 
-List<Student> students = [
-  Student(name: 'Nagham Hejja', id: '1234'),
-  Student(name: 'Deema Mohammad', id: '5678'),
-  Student(name: 'Raghad Ahmad', id: '9856'),
-  Student(name: 'Sara Ali', id: '5409'),
-];
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-
-class Main extends StatelessWidget {
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: FirstPage(), routes: <String, WidgetBuilder>{
-      '/b': (BuildContext context) => attendance(students[0]),
-    });
-  }
-}
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
 
-class FirstPage extends StatelessWidget {
-  const FirstPage({
-    Key? key,
-  }) : super(key: key);
-
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.green,
-      appBar: AppBar(
-        backgroundColor: Colors.lightGreenAccent,
-        title: Text('Student App'),
-        centerTitle: true,
-
+        primarySwatch: Colors.grey,
       ),
-      body: ListView(
-        children: [
-          StudentCard(
-            students[0],
-            std: students[0],
-          ),
-          StudentCard(
-            students[1],
-            std: students[1],
-          ),
-          StudentCard(
-            students[2],
-            std: students[2],
-          ),
-          StudentCard(
-            students[3],
-            std: students[3],
-          ),
-        ],
-      ),
+      home: MyHomePage(),
     );
   }
 }
 
-class StudentCard extends StatefulWidget {
-  final Student std;
-
-  StudentCard(Student student, {required this.std});
-
-  @override
-  _StudentCardState createState() => _StudentCardState();
-}
-
-class _StudentCardState extends State<StudentCard> {
+class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(5.0),
-        child: Container(
-            height: 160.0,
+    return Scaffold(
+        appBar: AppBar(title: Text("Home"),),
+        body: Text("Home Page"),
+        drawer: Drawer(
+            child: Container(
+                color: Colors.white,
+                child: ListView(
 
-            child:
-            Card(
-                elevation: 10.0,
-                color: Colors.white70,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20.0),
-                ),
-                child: Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      'Name: ',
-                                      style: TextStyle(
-                                          fontSize: 23,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      this.widget.std.name,
-                                      style: TextStyle(
-                                          fontSize: 22, letterSpacing: 2.0),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      'Id: ',
-                                      style: TextStyle(
-                                          fontSize: 23,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      this.widget.std.id,
-                                      style: TextStyle(
-                                          fontSize: 22, letterSpacing: 2.0),
-                                    ),
-                                  ],
-                                ),
-                              ],
+
+                            Text('Sandra Adams',
+                              style: TextStyle(letterSpacing: 2.0,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.bold),),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Row(
+
+                          children: [
+
+                            Text('sandra@gmail.com', style: TextStyle(
+                                letterSpacing: 2.0, fontSize: 10.0),),
+
+                          ],
+
+
+                        ),
+                      ),
+
+
+                      Padding(
+                        padding: const EdgeInsets.all(5.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Image.asset(
+                              'images/anonymous.png', width: 50, height: 50,),
+                            Divider(
+                              color: Colors.grey,
                             ),
-                            //Image.asset('images/anonymous.jpg',width: 40,height: 40,),
-                            CircleAvatar(
-                              backgroundImage:
-                              AssetImage('assets/images/anonymous.png'),
-                              radius: 40.0,
+
+                            buildMenuItem(
+                                icon: Icon(Icons.folder),
+                                title: "My Files",
+                                onClick: () {
+                                  selectItem(context, 0);
+                                  TextField(
+                                      focusNode: FocusNode(),
+                                      enableInteractiveSelection: true,
+
+                                  );
+                                }
+
+                            ),
+
+                            buildMenuItem(
+                                icon: Icon(Icons.people),
+                                title: "shared with me",
+                                onClick: ()
+                                     {
+                                  selectItem(context, 1);
+                                  TextField(
+                                      focusNode: FocusNode(),
+                                      enableInteractiveSelection: false,
+                                  );
+                                }
                             )
+                            ,
+                            buildMenuItem(
+                                icon: Icon(Icons.watch_later),
+                                title: "Recent",
+                                onClick: () {
+                                  selectItem(context, 2);
+                                }
+                            ),
+                            buildMenuItem(
+                                icon: Icon(Icons.restore_from_trash_outlined),
+                                title: "Trash",
+
+                                onClick: () {
+                                  selectItem(context, 3);
+
+                                      Row(
+                                        children: [
+                                          Divider(
+                                            color: Colors.grey,
+                                          ),
+                                          Text('Lable')
+                                        ],
+
+                                      );
+                                      Row(
+                                        children: [
+
+                                        ],
+                                      );
+
+
+                                }
+
+                            ),
+                          buildMenuItem(
+                          icon: Icon(Icons.bookmark_outlined),
+                          title: "Family",
+
+                         onClick: () {
+                           selectItem(context, 4);
+                         })
                           ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            IconButton(
-                                icon: widget.std.check
-                                    ? Icon(
-                                  Icons.check_box,
-                                  color: Colors.green,
 
-                                )
-                                    : Icon(
-                                  Icons.check_box_outline_blank,
-                                  color: Colors.green,
-                                ),
-                                onPressed: () {
-                                  widget.std.check = !(widget.std.check);
-                                  setState(() {});
-                                }),
-                          ],
-                        ),
-                  Row(
-
-                      children: [
-                        TextButton(
-                          child: Text('attendent students'),
-                          onPressed: (
-                              ) {
-
-                            Navigator.pushNamed(context, '/b');
-
-                          },
-
-
-
-                        )
-
-                          ],
                         ),
 
-]
-                    )
 
+                      )
+
+                    ]
 
                 )
             )
-    )
-        );
+        )
+    );
+  }
 
-  }}
+
+  buildMenuItem(
+      {required Icon icon, required String title, required Function onClick}) {
+    return ListTile(
+      leading: icon,
+      title: Text(title),
+      onTap: () {
+        onClick();
+      },
+    );
+  }
+
+  selectItem(BuildContext context, int index) {
+    switch (index) {
+      case 0:
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Myfiles())
+        );
+        break;
+      case 1:
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => SharedWithMe())
+        );
+        break;
+      case 2:
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Recent())
+        );
+        break;
+      case 3:
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Trash())
+        );
+        break;
+      case 4:
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Family())
+        );
+    }
+  }
+
+}
+
+class Myfiles extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("MyFile"),),
+      body: Text("My File page"),
+    );
+  }
+
+}
+
+class SharedWithMe extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("shared with me"),),
+      body: Text("shared with me page"),
+    );
+  }
+
+}
+class Recent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Recent"),),
+      body: Text("Recent page"),
+    );
+  }
+
+}
+class Trash extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Trash"),),
+      body: Text("Trash page"),
+    );
+  }
+
+}
+class Family extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: Text("Family"),),
+      body: Text("Family page"),
+    );
+  }
+
+}
+
 
 
 
